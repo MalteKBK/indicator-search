@@ -1,11 +1,16 @@
 import streamlit as st
 import pandas as pd
+import requests
+from io import BytesIO
 
-# Indlæs biblioteket direkte fra den flettede Excel-fil
+# Indlæs biblioteket direkte fra GitHub
 @st.cache_data
 def load_data():
-    url = "https://raw.githubusercontent.com/MalteKBK/indikator-search/main/Merged_Bibliotek.xlsx"
-    df = pd.read_excel(url, engine='openpyxl')
+    url = "https://raw.githubusercontent.com/<YOUR-GITHUB-USERNAME>/indikator-search/main/Merged_Bibliotek.xlsx"
+    response = requests.get(url)
+    response.raise_for_status()  # Check for HTTP errors
+    excel_data = BytesIO(response.content)
+    df = pd.read_excel(excel_data, engine='openpyxl')
     return df
 
 data = load_data()
