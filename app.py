@@ -1,12 +1,9 @@
 import streamlit as st
 import pandas as pd
 import requests
-import openai
 from io import BytesIO
 import os
-
-# Sæt din OpenAI API-nøgle som en miljøvariabel
-openai.api_key = os.getenv('OPENAI_API_KEY')
+from rapidfuzz import process, fuzz
 
 # Indlæs biblioteket direkte fra GitHub
 @st.cache_data
@@ -27,7 +24,7 @@ st.title("Indikator Søgning")
 query = st.text_input("Søg efter produkt, produktnavn, producent eller materiale:")
 
 if query:
-    # Filtrer data baseret på søgningen
+    # Filtrer data baseret på direkte matches
     filtered_data = data[
         data.apply(lambda row: query.lower() in str(row).lower(), axis=1)
     ]
@@ -53,17 +50,8 @@ if query:
             for i, row in filtered_data.iloc[1:].iterrows():
                 st.markdown(f"- Indikator: {row['Indikator']} ({', '.join([str(row[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(row[col]) and query.lower() in str(row[col]).lower()])})")
     else:
-        # Brug OpenAI API til at finde det tætteste match
-        descriptions = data[['Indikator', 'Relevante bygningsdele']].fillna('').to_dict(orient='records')
-        prompt = f"Find det tætteste match for '{query}' baseret på følgende beskrivelser: {descriptions}"
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "Find det tætteste match for produktbeskrivelser."},
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=300,
-            temperature=0.7
-        )
-        closest_match = response['choices'][0]['message']['content'].strip()
-        st.warning(f"Ingen direkte match fundet. Det tætteste match er: {closest_match}")
+        # Brug RapidFuzz til at finde det tætteste match
+        choices = data['Relevante bygningsdele'].fillna('').tolist()
+        match, score, index = process.extractOne(query, choices, scorer=fuzz.token_sort_ratio)
+        closest_row = data.iloc[index]
+        st.warning(f"Ingen direkte match fundet. Det tætteste match er: {closest_row['Indikator']} med beskrivelsen '{closest_row['Relevante bygningsdele']}' (Sandsynlighed: {score}%)")
