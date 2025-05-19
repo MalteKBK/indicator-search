@@ -6,13 +6,14 @@ from io import BytesIO
 # Indlæs biblioteket direkte fra GitHub
 @st.cache_data
 def load_data():
-    url = "https://raw.githubusercontent.com/MalteKBK/indicator-search/main/Merged_Bibliotek.xlsx"
+    url = "https://raw.githubusercontent.com/<YOUR-GITHUB-USERNAME>/indikator-search/main/Merged_Bibliotek.xlsx"
     response = requests.get(url)
     response.raise_for_status()  # Check for HTTP errors
     excel_data = BytesIO(response.content)
     df = pd.read_excel(excel_data, engine='openpyxl')
+    # Fjern mellemrum fra kolonnenavne
+    df.columns = [col.strip() for col in df.columns]
     return df
-df.columns = [col.strip() for col in df.columns]
 
 data = load_data()
 
@@ -31,7 +32,7 @@ if query:
         for _, row in filtered_data.iterrows():
             st.markdown(f"### Indikator: {row['Indikator']}")
             st.markdown(f"**Beskrivelse:** {row['Relevante bygningsdele'] or 'Ikke tilgængelig'}")
-            st.markdown(f"**Kvalitetstrin 1:** {row['Kvalitetstrin 1'] or 'Ikke tilgængelig'}")
+            st.markdown(f"**Kvalitetstrin 1:** {row['Krav til kvalitetstrin'] or 'Ikke tilgængelig'}")
             st.markdown(f"**Kvalitetstrin 2:** {row['Kvalitetstrin 2'] or 'Ikke tilgængelig'}")
             st.markdown(f"**Kvalitetstrin 3:** {row['Kvalitetstrin 3'] or 'Ikke tilgængelig'}")
             st.markdown(f"**Kvalitetstrin 4:** {row['Kvalitetstrin 4'] or 'Ikke tilgængelig'}")
