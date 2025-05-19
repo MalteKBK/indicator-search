@@ -28,29 +28,6 @@ data = load_data()
 if 'history' not in st.session_state:
     st.session_state.history = []
 
-# Fil upload
-uploaded_file = st.file_uploader("📁 Upload dit eget bibliotek (med korrekte kolonnenavne)")
-
-st.markdown("""
-### 📑 Krav til filstruktur
-For at kunne bruge dine egne filer skal de indeholde følgende kolonner:
-- **Indikator** - Navnet på indikatoren.
-- **Relevante bygningsdele** - Beskrivelse af de relevante bygningsdele.
-- **Kvalitetstrin** - Produktets aktuelle kvalitetstrin.
-- **Krav til kvalitetstrin** - Beskrivelse af kravene for kvalitetstrin 1.
-- **Kvalitetstrin 2** - Beskrivelse af kravene for kvalitetstrin 2.
-- **Kvalitetstrin 3** - Beskrivelse af kravene for kvalitetstrin 3.
-- **Kvalitetstrin 4** - Beskrivelse af kravene for kvalitetstrin 4.
-- **Materiale** - Navn på materialet.
-- **Produktnavn** - Navn på produktet.
-- **Producent** - Navn på producenten.
-- **Kategori** - Kategori af produktet.
-
-💡 Sørg for, at der ikke er mellemrum før eller efter kolonnenavnene.
-""")
-if uploaded_file is not None:
-    data = load_data(uploaded_file)
-
 # Søgning
 st.title("🔍 Indikator Søgning for DGNB")
 query = st.text_input("Søg efter produkt, produktnavn, producent eller materiale:")
@@ -106,3 +83,28 @@ if query or selected_index is not None:
         pdf.output(temp_pdf.name)
         st.success("PDF eksporteret!")
         st.download_button("💾 Download PDF", temp_pdf.name, file_name="Indikator_Resultat.pdf")
+
+# Krav til bibliotek (skjult bag knap)
+with st.expander("📚 Krav til bibliotek"):
+    st.markdown("""
+    For at kunne bruge dine egne filer skal de indeholde følgende kolonner:
+    - **Indikator** - Navnet på indikatoren.
+    - **Relevante bygningsdele** - Beskrivelse af de relevante bygningsdele.
+    - **Kvalitetstrin** - Produktets aktuelle kvalitetstrin.
+    - **Krav til kvalitetstrin** - Beskrivelse af kravene for kvalitetstrin 1.
+    - **Kvalitetstrin 2** - Beskrivelse af kravene for kvalitetstrin 2.
+    - **Kvalitetstrin 3** - Beskrivelse af kravene for kvalitetstrin 3.
+    - **Kvalitetstrin 4** - Beskrivelse af kravene for kvalitetstrin 4.
+    - **Materiale** - Navn på materialet.
+    - **Produktnavn** - Navn på produktet.
+    - **Producent** - Navn på producenten.
+    - **Kategori** - Kategori af produktet.
+
+    💡 Sørg for, at der ikke er mellemrum før eller efter kolonnenavnene.
+    """)
+
+# Fil upload sektion nederst
+st.markdown("---")
+uploaded_file = st.file_uploader("📁 Upload din egen Merged_Bibliotek.xlsx")
+if uploaded_file is not None:
+    data = load_data(uploaded_file)
