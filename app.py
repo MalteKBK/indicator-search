@@ -27,21 +27,25 @@ if query:
         data.apply(lambda row: query.lower() in str(row).lower(), axis=1)
     ]
     
-    # Hvis der er resultater, vis dem
+    # Hvis der er resultater, vis hovedresultat
     if not filtered_data.empty:
-        for _, row in filtered_data.iterrows():
-            st.markdown(f"## Indikatoren er sandsynligvis: {row['Indikator']}")
-            st.markdown(f"**Beskrivelse:** {row['Relevante bygningsdele'] or 'Ikke tilgængelig'}")
-            
-            # Resultatboks for kvalitetstrin
-            st.markdown("<div style='display: flex; gap: 20px;'>", unsafe_allow_html=True)
-            st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 1:</strong><br>{row['Krav til kvalitetstrin'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 2:</strong><br>{row['Kvalitetstrin 2'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 3:</strong><br>{row['Kvalitetstrin 3'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 4:</strong><br>{row['Kvalitetstrin 4'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
-            st.markdown("</div>", unsafe_allow_html=True)
-            
-            st.markdown(f"**Forklaring:** Match fundet i: {', '.join([str(row[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(row[col]) and query.lower() in str(row[col]).lower()])}")
-            st.markdown("---")
+        hoved_resultat = filtered_data.iloc[0]
+        st.markdown(f"<div style='background-color: #dfe7fd; padding: 20px; border-radius: 15px; margin-bottom: 20px;'>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='color: #1f3c88;'>✅ Indikatoren er sandsynligvis: {hoved_resultat['Indikator']}</h2>", unsafe_allow_html=True)
+        st.markdown(f"<p><strong>Beskrivelse:</strong> {hoved_resultat['Relevante bygningsdele'] or 'Ikke tilgængelig'}</p>", unsafe_allow_html=True)
+        st.markdown("<div style='display: flex; gap: 20px;'>", unsafe_allow_html=True)
+        st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 1:</strong><br>{hoved_resultat['Krav til kvalitetstrin'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 2:</strong><br>{hoved_resultat['Kvalitetstrin 2'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 3:</strong><br>{hoved_resultat['Kvalitetstrin 3'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 4:</strong><br>{hoved_resultat['Kvalitetstrin 4'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown(f"<p><strong>Forklaring:</strong> Match fundet i: {', '.join([str(hoved_resultat[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(hoved_resultat[col]) and query.lower() in str(hoved_resultat[col]).lower()])}</p>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        # Vis alternative resultater
+        if len(filtered_data) > 1:
+            st.markdown("### Det kan også være:")
+            for i, row in filtered_data.iloc[1:].iterrows():
+                st.markdown(f"- Indikator: {row['Indikator']} ({', '.join([str(row[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(row[col]) and query.lower() in str(row[col]).lower()])})")
     else:
         st.warning("Ingen relevante indikatorer fundet.")
