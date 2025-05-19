@@ -6,7 +6,7 @@ from io import BytesIO
 # Indlæs biblioteket direkte fra GitHub
 @st.cache_data
 def load_data():
-    url = "https://raw.githubusercontent.com/Maltekbk/indikator-search/main/Merged_Bibliotek.xlsx"
+    url = "https://raw.githubusercontent.com/MalteKBK/indicator-search/main/Merged_Bibliotek.xlsx"
     response = requests.get(url)
     response.raise_for_status()  # Check for HTTP errors
     excel_data = BytesIO(response.content)
