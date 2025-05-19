@@ -80,9 +80,14 @@ if query or selected_index is not None:
         pdf.set_font("Helvetica", size=12)
         pdf.multi_cell(0, 10, f"Indikator: {hoved_resultat['Indikator']}\nBeskrivelse: {hoved_resultat['Relevante bygningsdele']}\nKvalitetstrin: {hoved_resultat['Kvalitetstrin']}\n\nKvalitetstrin 1: {hoved_resultat['Krav til kvalitetstrin']}\nKvalitetstrin 2: {hoved_resultat['Kvalitetstrin 2']}\nKvalitetstrin 3: {hoved_resultat['Kvalitetstrin 3']}\nKvalitetstrin 4: {hoved_resultat['Kvalitetstrin 4']}")
         temp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
-        pdf.output(temp_pdf.name)
+        pdf.output(temp_pdf.name, dest="F")
         st.success("PDF eksporteret!")
-        st.download_button("💾 Download PDF", temp_pdf.name, file_name="Indikator_Resultat.pdf")
+        with open(temp_pdf.name, "rb") as f:
+            st.download_button("💾 Download PDF", f, file_name="Indikator_Resultat.pdf")
+
+# Fil upload sektion nederst
+st.markdown("---")
+uploaded_file = st.file_uploader("📁 Upload din egen Merged_Bibliotek.xlsx")
 
 # Krav til bibliotek (skjult bag knap)
 with st.expander("📚 Krav til bibliotek"):
@@ -102,9 +107,3 @@ with st.expander("📚 Krav til bibliotek"):
 
     💡 Sørg for, at der ikke er mellemrum før eller efter kolonnenavnene.
     """)
-
-# Fil upload sektion nederst
-st.markdown("---")
-uploaded_file = st.file_uploader("📁 Upload din egen Merged_Bibliotek.xlsx")
-if uploaded_file is not None:
-    data = load_data(uploaded_file)
