@@ -30,12 +30,17 @@ if query:
     # Hvis der er resultater, vis dem
     if not filtered_data.empty:
         for _, row in filtered_data.iterrows():
-            st.markdown(f"### Indikator: {row['Indikator']}")
+            st.markdown(f"## Indikatoren er sandsynligvis: {row['Indikator']}")
             st.markdown(f"**Beskrivelse:** {row['Relevante bygningsdele'] or 'Ikke tilgængelig'}")
-            st.markdown(f"**Kvalitetstrin 1:** {row['Krav til kvalitetstrin'] or 'Ikke tilgængelig'}")
-            st.markdown(f"**Kvalitetstrin 2:** {row['Kvalitetstrin 2'] or 'Ikke tilgængelig'}")
-            st.markdown(f"**Kvalitetstrin 3:** {row['Kvalitetstrin 3'] or 'Ikke tilgængelig'}")
-            st.markdown(f"**Kvalitetstrin 4:** {row['Kvalitetstrin 4'] or 'Ikke tilgængelig'}")
+            
+            # Resultatboks for kvalitetstrin
+            st.markdown("<div style='display: flex; gap: 20px;'>", unsafe_allow_html=True)
+            st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 1:</strong><br>{row['Krav til kvalitetstrin'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 2:</strong><br>{row['Kvalitetstrin 2'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 3:</strong><br>{row['Kvalitetstrin 3'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='flex: 1; background-color: #f0f0f0; padding: 15px; border-radius: 10px;'><strong>Kvalitetstrin 4:</strong><br>{row['Kvalitetstrin 4'] or 'Ikke tilgængelig'}</div>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
+            
             st.markdown(f"**Forklaring:** Match fundet i: {', '.join([str(row[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(row[col]) and query.lower() in str(row[col]).lower()])}")
             st.markdown("---")
     else:
