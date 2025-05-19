@@ -20,7 +20,7 @@ def load_data():
 data = load_data()
 
 # Søgning
-st.title("Indikator Søgning")
+st.title("DGNB ENV1.2 - Indikatorsøgning")
 query = st.text_input("Søg efter produkt, produktnavn, producent eller materiale:")
 
 if query:
