@@ -25,6 +25,7 @@ query = st.text_input("Søg efter produkt, produktnavn, producent eller material
 
 # Variabel til at holde det valgte alternativ
 selected_index = st.session_state.get("selected_index", None)
+filtered_data = pd.DataFrame()  # Initialiser tomt DataFrame til senere brug
 
 if query or selected_index is not None:
     # Hvis der er et valgt alternativ, brug det som hovedresultat
