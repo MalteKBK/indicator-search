@@ -12,6 +12,7 @@ def load_data():
     excel_data = BytesIO(response.content)
     df = pd.read_excel(excel_data, engine='openpyxl')
     return df
+df.columns = [col.strip() for col in df.columns]
 
 data = load_data()
 
