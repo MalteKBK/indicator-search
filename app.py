@@ -63,5 +63,5 @@ if query or selected_index is not None:
     if query and not filtered_data.empty and len(filtered_data) > 1:
         st.markdown("### Det kan også være:")
         for i, row in filtered_data.iloc[1:].iterrows():
-            if st.button(f"Se indikator {row['Indikator']} ({', '.join([str(row[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(row[col]) and query.lower() in str(row[col]).lower()])})"):
+            if st.button(f"Se indikator {row['Indikator']} ({', '.join([str(row[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(row[col]) and query.lower() in str(row[col]).lower()])})", key=f"alt_button_{row.name}"):
                 st.session_state.selected_index = row.name
