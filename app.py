@@ -54,12 +54,15 @@ if query:
                 st.markdown(f"- Indikator: {row['Indikator']} ({', '.join([str(row[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(row[col]) and query.lower() in str(row[col]).lower()])})")
     else:
         # Brug OpenAI API til at finde det tætteste match
-        descriptions = data['Relevante bygningsdele'].fillna('').tolist()
-        prompt = f"Find det tætteste match for følgende forespørgsel: '{query}'. Her er nogle beskrivelser: {descriptions}"
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=prompt,
-            max_tokens=150
+        descriptions = data[['Indikator', 'Relevante bygningsdele']].fillna('').to_dict(orient='records')
+        messages = [
+            {"role": "system", "content": "Find det tætteste match for følgende forespørgsel."},
+            {"role": "user", "content": f"'{query}'"}
+        ]
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=messages,
+            max_tokens=300
         )
-        closest_match = response.choices[0].text.strip()
+        closest_match = response['choices'][0]['message']['content'].strip()
         st.warning(f"Ingen direkte match fundet. Det tætteste match er: {closest_match}")
