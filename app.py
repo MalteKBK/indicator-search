@@ -29,7 +29,25 @@ if 'history' not in st.session_state:
     st.session_state.history = []
 
 # Fil upload
-uploaded_file = st.file_uploader("Upload dit eget bibliotek (med korrekte kolonnenavne)")
+uploaded_file = st.file_uploader("📁 Upload dit eget bibliotek (med korrekte kolonnenavne)")
+
+st.markdown("""
+### 📑 Krav til filstruktur
+For at kunne bruge dine egne filer skal de indeholde følgende kolonner:
+- **Indikator** - Navnet på indikatoren.
+- **Relevante bygningsdele** - Beskrivelse af de relevante bygningsdele.
+- **Kvalitetstrin** - Produktets aktuelle kvalitetstrin.
+- **Krav til kvalitetstrin** - Beskrivelse af kravene for kvalitetstrin 1.
+- **Kvalitetstrin 2** - Beskrivelse af kravene for kvalitetstrin 2.
+- **Kvalitetstrin 3** - Beskrivelse af kravene for kvalitetstrin 3.
+- **Kvalitetstrin 4** - Beskrivelse af kravene for kvalitetstrin 4.
+- **Materiale** - Navn på materialet.
+- **Produktnavn** - Navn på produktet.
+- **Producent** - Navn på producenten.
+- **Kategori** - Kategori af produktet.
+
+💡 Sørg for, at der ikke er mellemrum før eller efter kolonnenavnene.
+""")
 if uploaded_file is not None:
     data = load_data(uploaded_file)
 
