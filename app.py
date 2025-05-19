@@ -1,7 +1,12 @@
 import streamlit as st
 import pandas as pd
 import requests
+import openai
 from io import BytesIO
+import os
+
+# Sæt din OpenAI API-nøgle som en miljøvariabel
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # Indlæs biblioteket direkte fra GitHub
 @st.cache_data
@@ -48,4 +53,13 @@ if query:
             for i, row in filtered_data.iloc[1:].iterrows():
                 st.markdown(f"- Indikator: {row['Indikator']} ({', '.join([str(row[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(row[col]) and query.lower() in str(row[col]).lower()])})")
     else:
-        st.warning("Ingen relevante indikatorer fundet.")
+        # Brug OpenAI API til at finde det tætteste match
+        descriptions = data['Relevante bygningsdele'].fillna('').tolist()
+        prompt = f"Find det tætteste match for følgende forespørgsel: '{query}'. Her er nogle beskrivelser: {descriptions}"
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=prompt,
+            max_tokens=150
+        )
+        closest_match = response.choices[0].text.strip()
+        st.warning(f"Ingen direkte match fundet. Det tætteste match er: {closest_match}")
