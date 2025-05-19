@@ -29,7 +29,7 @@ if 'history' not in st.session_state:
     st.session_state.history = []
 
 # Fil upload
-uploaded_file = st.file_uploader("Upload din egen Merged_Bibliotek.xlsx (med korrekte kolonnenavne)")
+uploaded_file = st.file_uploader("Upload dit eget bibliotek (med korrekte kolonnenavne)")
 if uploaded_file is not None:
     data = load_data(uploaded_file)
 
