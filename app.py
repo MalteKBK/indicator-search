@@ -55,14 +55,15 @@ if query:
     else:
         # Brug OpenAI API til at finde det tætteste match
         descriptions = data[['Indikator', 'Relevante bygningsdele']].fillna('').to_dict(orient='records')
-        messages = [
-            {"role": "system", "content": "Find det tætteste match for følgende forespørgsel."},
-            {"role": "user", "content": f"'{query}'"}
-        ]
+        prompt = f"Find det tætteste match for '{query}' baseret på følgende beskrivelser: {descriptions}"
         response = openai.ChatCompletion.create(
             model="gpt-4",
-            messages=messages,
-            max_tokens=300
+            messages=[
+                {"role": "system", "content": "Find det tætteste match for produktbeskrivelser."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=300,
+            temperature=0.7
         )
         closest_match = response['choices'][0]['message']['content'].strip()
         st.warning(f"Ingen direkte match fundet. Det tætteste match er: {closest_match}")
