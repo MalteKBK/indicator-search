@@ -4,7 +4,7 @@ import pandas as pd
 # Indlæs biblioteket direkte fra den flettede Excel-fil
 @st.cache_data
 def load_data():
-    url = "https://raw.githubusercontent.com/<YOUR-GITHUB-USERNAME>/indikator-search/main/Merged_Bibliotek.xlsx"
+    url = "https://raw.githubusercontent.com/MalteKBK/indikator-search/main/Merged_Bibliotek.xlsx"
     return pd.read_excel(url)
 
 data = load_data()
