@@ -5,7 +5,8 @@ import pandas as pd
 @st.cache_data
 def load_data():
     url = "https://raw.githubusercontent.com/MalteKBK/indikator-search/main/Merged_Bibliotek.xlsx"
-    return pd.read_excel(url)
+    df = pd.read_excel(url, engine='openpyxl')
+    return df
 
 data = load_data()
 
@@ -32,4 +33,3 @@ if query:
             st.markdown("---")
     else:
         st.warning("Ingen relevante indikatorer fundet.")
-
