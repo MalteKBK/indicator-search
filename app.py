@@ -85,6 +85,10 @@ if query or selected_index is not None:
         with open(temp_pdf.name, "rb") as f:
             st.download_button("💾 Download PDF", f, file_name="Indikator_Resultat.pdf")
 
+# Tilføj vejlednings-knap/link øverst
+with st.expander("📄 Vejledning til ENV1.2 (åbn PDF)"):
+    st.markdown('[Åbn DGNB ENV1.2 vejledning 2023 (PDF)](Arkiv/DGNB ENV1.2 vejledning 2023.pdf)', unsafe_allow_html=True)
+
 # Fil upload sektion nederst
 st.markdown("---")
 uploaded_file = st.file_uploader("📁 Upload din egen Merged_Bibliotek.xlsx")
