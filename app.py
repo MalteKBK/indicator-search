@@ -87,7 +87,7 @@ if query or selected_index is not None:
 
 # Tilføj vejlednings-knap/link øverst
 with st.expander("📄 Vejledning til ENV1.2 (åbn PDF)"):
-    st.markdown('[Åbn DGNB ENV1.2 vejledning 2023 (PDF)](Arkiv/DGNB ENV1.2 vejledning 2023.pdf)', unsafe_allow_html=True)
+    st.markdown('[Åbn DGNB ENV1.2 vejledning 2023 (PDF)](DGNB ENV1.2 vejledning 2023.pdf)', unsafe_allow_html=True)
 
 # Fil upload sektion nederst
 st.markdown("---")
