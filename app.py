@@ -29,7 +29,7 @@ if 'history' not in st.session_state:
     st.session_state.history = []
 
 # Søgning
-st.title("🔍 Indikator Søgning for DGNB")
+st.title("🔍 DGNB ENV1.2 Indikator-søger")
 st.info("**Obs:** Brug af værktøjet er vejledende, og gælder endnu ikke produkter der anvendes til **DGNB2025-projekter**.")
 query = st.text_input("Søg efter produkt, produktnavn, producent eller materiale:")
 
