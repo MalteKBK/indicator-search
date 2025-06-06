@@ -32,6 +32,21 @@ if 'history' not in st.session_state:
 st.title("🔍 Indikator Søgning for DGNB")
 query = st.text_input("Søg efter produkt, produktnavn, producent eller materiale:")
 
+# FAQ database baseret på søgeord (lavet nem at udvide)
+FAQS = {
+    "mørtel": "Mørtel falder ikke ind under nogen indikator, medmindre der er tale om mørtel der bruges ifm. f.eks. fliseopsætning",
+    # Tilføj flere: "søgeord": "faq-tekst"
+}
+
+# Tjek om query matcher nogen FAQ og vis i sidepanelet
+matched_faqs = [text for keyword, text in FAQS.items() if keyword.lower() in query.lower()]
+if matched_faqs:
+    with st.sidebar:
+        st.markdown("### ❓ FAQ")
+        for faq in matched_faqs:
+            st.info(faq)
+
+
 selected_index = st.session_state.get("selected_index", None)
 filtered_data = pd.DataFrame()  # Initialiser tomt DataFrame til senere brug
 
