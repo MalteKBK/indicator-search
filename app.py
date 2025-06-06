@@ -30,6 +30,7 @@ if 'history' not in st.session_state:
 
 # Søgning
 st.title("🔍 Indikator Søgning for DGNB")
+st.info("**Obs:** Brug af værktøjet er vejledende, og gælder endnu ikke produkter der anvendes til **DGNB2025-projekter**.")
 query = st.text_input("Søg efter produkt, produktnavn, producent eller materiale:")
 
 # FAQ database baseret på søgeord (lavet nem at udvide)
