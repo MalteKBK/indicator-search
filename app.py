@@ -88,18 +88,34 @@ if query or selected_index is not None:
     st.markdown(f"<p><strong>Forklaring:</strong> Match fundet i: {', '.join([str(hoved_resultat[col]) for col in ['Materiale', 'Produktnavn', 'Producent', 'Kategori'] if pd.notna(hoved_resultat[col]) and query.lower() in str(hoved_resultat[col]).lower()])}</p>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
     
-    # Eksport til PDF
-    if st.button("📄 Eksportér resultat som PDF"):
-        pdf = FPDF()
-        pdf.set_auto_page_break(auto=True, margin=15)
-        pdf.add_page()
-        pdf.set_font("Helvetica", size=12)
-        pdf.multi_cell(0, 10, fIndikator: {hoved_resultat['Indikator']}\nBeskrivelse: {hoved_resultat['Relevante bygningsdele']}\nKvalitetstrin: {hoved_resultat['Kvalitetstrin']}\n\nKvalitetstrin 1: {hoved_resultat['Kvalitetstrin 1 Krav']}\nKvalitetstrin 2: {hoved_resultat['Kvalitetstrin 2 Krav']}\nKvalitetstrin 3: {hoved_resultat['Kvalitetstrin 3 Krav']}\nKvalitetstrin 4: {hoved_resultat['Kvalitetstrin 4 Krav']}")
-        temp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
-        pdf.output(temp_pdf.name, dest="F")
-        st.success("PDF eksporteret!")
-        with open(temp_pdf.name, "rb") as f:
-            st.download_button("💾 Download PDF", f, file_name="Indikator_Resultat.pdf")
+   # Eksport til PDF
+if st.button("📄 Eksportér resultat som PDF"):
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    pdf.set_font("Helvetica", size=12)
+
+    # Byg tekst til PDF
+    tekst = (
+        f"Søgning: {query}\n\n"
+        f"Indikator: {hoved_resultat['Indikator']}\n"
+        f"Beskrivelse: {hoved_resultat['Relevante bygningsdele']}\n"
+        f"Kvalitetstrin: {hoved_resultat['Kvalitetstrin']}\n\n"
+        f"Kvalitetstrin 1: {hoved_resultat['Kvalitetstrin 1 Krav']}\n"
+        f"Kvalitetstrin 2: {hoved_resultat['Kvalitetstrin 2 Krav']}\n"
+        f"Kvalitetstrin 3: {hoved_resultat['Kvalitetstrin 3 Krav']}\n"
+        f"Kvalitetstrin 4: {hoved_resultat['Kvalitetstrin 4 Krav']}"
+    )
+
+    # Skriv til PDF
+    pdf.multi_cell(0, 10, tekst)
+
+    # Gem PDF midlertidigt og tilbyd download
+    temp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+    pdf.output(temp_pdf.name, dest="F")
+    st.success("PDF eksporteret!")
+    with open(temp_pdf.name, "rb") as f:
+        st.download_button("💾 Download PDF", f, file_name="Indikator_Resultat.pdf")
 
 # Fil upload sektion nederst
 st.markdown("---")
