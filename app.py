@@ -94,7 +94,7 @@ if query or selected_index is not None:
         pdf.set_auto_page_break(auto=True, margin=15)
         pdf.add_page()
         pdf.set_font("Helvetica", size=12)
-        pdf.multi_cell(0, 10, f"Indikator: {hoved_resultat['Indikator']}\nBeskrivelse: {hoved_resultat['Relevante bygningsdele']}\nKvalitetstrin: {hoved_resultat['Kvalitetstrin']}\n\nKvalitetstrin 1: {hoved_resultat['Kvalitetstrin 1 Krav']}\nKvalitetstrin 2: {hoved_resultat['Kvalitetstrin 2 Krav']}\nKvalitetstrin 3: {hoved_resultat['Kvalitetstrin 3 Krav']}\nKvalitetstrin 4: {hoved_resultat['Kvalitetstrin 4 Krav']}")
+        pdf.multi_cell(0, 10, fSøgning: {query}\nIndikator: {hoved_resultat['Indikator']}\nBeskrivelse: {hoved_resultat['Relevante bygningsdele']}\nKvalitetstrin: {hoved_resultat['Kvalitetstrin']}\n\nKvalitetstrin 1: {hoved_resultat['Kvalitetstrin 1 Krav']}\nKvalitetstrin 2: {hoved_resultat['Kvalitetstrin 2 Krav']}\nKvalitetstrin 3: {hoved_resultat['Kvalitetstrin 3 Krav']}\nKvalitetstrin 4: {hoved_resultat['Kvalitetstrin 4 Krav']}")
         temp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
         pdf.output(temp_pdf.name, dest="F")
         st.success("PDF eksporteret!")
